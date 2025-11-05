@@ -15,7 +15,7 @@ A real-time **Space Invaders** game developed in **C** using an **ATmega1284 mic
 - ATmega1284 Microcontroller
 - HiLetgo 1.44" SPI LCD Display
 - Joystick module
-- 2×18 LED Display
+- 2×16 LED Display
 - Passive Buzzer
 
 ## Software
