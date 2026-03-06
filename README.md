@@ -45,7 +45,7 @@ The program runs as a scheduled set of finite-state-machine-style tasks.
 
 ```mermaid
 flowchart TD
-    Start([Power On / Reset]) --> Init[Initialize peripherals\nSPI, ADC, Timers, PWM, LCD]
+    Start([Power On / Reset]) --> Init[Initialize peripherals<br>SPI, ADC, Timers, PWM, LCD]
     Init --> Scheduler[Start synchronous scheduler]
 
     Scheduler --> T1[Task: Read Input]
