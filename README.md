@@ -37,7 +37,36 @@ flowchart LR
 - **HUD Output:** LED display for score and lives.
 - **Audio:** Passive buzzer driven with PWM patterns.
 
+### Wiring Schematic
+
 ---
+#### 16 x 2 LCD Display 
+The LCD is wired for a standard 4-bit data interface.
+| Arduino Pin | LCD Pin Label | Function | Connection Type |
+| :--- | :--- | :--- | :--- |
+| GND | VSS | Ground | Ground Rail  |
+| 5V | VDD | Logic Power | Power Rail  |
+| - | VO | Contrast | Potentiometer (Wiper)  |
+| D2 | RS | Register Select | Digital Signal  |
+| GND | RW | Read/Write | Ground Rail  |
+| D3 | E | Enable | Digital Signal  |
+| D4 | D4 | Data Bit 4 | Digital Signal  |
+| D5 | D5 | Data Bit 5 | Digital Signal  |
+| D6 | D6 | Data Bit 6 | Digital Signal  |
+| D7 | D7 | Data Bit 7 | Digital Signal  |
+
+
+#### HiLetgo Module (SPI LCD display)
+This module utilizes the high-speed SPI pins for game rendering.
+| Arduino Pin | Module Pin Label | Function |
+| :--- | :--- | :--- |
+| 5V / LED | LED | Backlight Power  |
+| D13 | SCK | Serial Clock  |
+| D11 | SDA | Serial Data (MOSI)  |
+| D9 | AO | Data/Command Select  |
+| D8 | RESET | Module Reset  |
+| D10 | CS | Chip Select  |
+
 
 ## Software / Task Flow
 
