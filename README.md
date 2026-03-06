@@ -20,9 +20,9 @@ This project demonstrates how to build a small game loop on resource-constrained
 flowchart LR
     MCU[ATmega1284 MCU]
     LCD[HiLetgo 1.44 in ST7735 SPI LCD]
-    JOY[Joystick Module\n(ADC X/Y + Button)]
-    LED[2x16 LED Display\nScore + Lives]
-    BUZ[Passive Buzzer\nPWM Output]
+    JOY[Joystick Module<br>(ADC X/Y + Button)]
+    LED[2x16 LED Display<br>Score + Lives]
+    BUZ[Passive Buzzer<br>PWM Output]
 
     MCU -- SPI --> LCD
     JOY -- Analog + Digital --> MCU
