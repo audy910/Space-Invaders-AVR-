@@ -1,44 +1,144 @@
 # Space Invaders on ATmega1284
 
-A real-time **Space Invaders** game developed in **C** using an **ATmega1284 microcontroller**. The game leverages a synchronous task scheduler for smooth gameplay and integrates display, input, and audio peripherals.
+A real-time **Space Invaders** game built in **C/C++** for the **ATmega1284**. The project uses a cooperative (synchronous) task scheduler to keep gameplay responsive while coordinating graphics, input, score/lives output, and sound effects.
 
-## Features
+## Overview
 
-- **Real-time gameplay** using a synchronous task scheduler for smooth and responsive controls.
-- **LCD graphics rendering** on a HiLetgo 1.44" SPI display with optimized SPI communication for efficient frame updates.
-- **Joystick controls** for player movement and shooting.
-- **2×18 LED display** to track score and remaining lives.
-- **PWM-driven audio feedback** via a passive buzzer for dynamic sound effects when winning, losing, or shooting.
+This project demonstrates how to build a small game loop on resource-constrained hardware by splitting work across periodic tasks:
 
-## Hardware Used
+- Read joystick input
+- Update player/projectile/enemy state
+- Render frames to the SPI LCD
+- Update score/lives output
+- Drive PWM sound effects
 
-- ATmega1284 Microcontroller
-- HiLetgo 1.44" SPI LCD Display
-- Joystick module
-- 2×16 LED Display
-- Passive Buzzer
+---
 
-## Software
+## Hardware Architecture
 
-- Written in **C**
-- Synchronous task scheduler for multitasking
-- SPI communication for LCD rendering
-- PWM audio generation for buzzer feedback
+```mermaid
+flowchart LR
+    MCU[ATmega1284 MCU]
+    LCD[HiLetgo 1.44" ST7735 SPI LCD]
+    JOY[Joystick Module\n(ADC X/Y + Button)]
+    LED[2x16 LED Display\nScore + Lives]
+    BUZ[Passive Buzzer\nPWM Output]
 
-## Usage
+    MCU -- SPI --> LCD
+    JOY -- Analog + Digital --> MCU
+    MCU -- GPIO --> LED
+    MCU -- Timer/PWM --> BUZ
+```
 
-1. Connect the microcontroller to the SPI LCD, joystick, LED display, and buzzer as per the wiring diagram.
-2. Compile the C code using your preferred AVR toolchain.
-3. Upload the program to the ATmega1284 microcontroller.
-4. Use the joystick to move the player character and shoot enemies.
-5. Track your score and remaining lives via the LED display.
+### Main Peripherals
 
-## Notes
+- **Display:** ST7735-based 1.44" SPI LCD for rendering gameplay.
+- **Input:** Joystick for left/right movement and firing.
+- **HUD Output:** LED display for score and lives.
+- **Audio:** Passive buzzer driven with PWM patterns.
 
-- Optimized SPI communication ensures smooth frame rendering without flicker.
-- PWM audio is used to provide immersive sound effects during gameplay.
-- Designed for embedded systems coursework and demonstration of real-time task scheduling in C.
+---
+
+## Software / Task Flow
+
+The program runs as a scheduled set of finite-state-machine-style tasks.
+
+```mermaid
+flowchart TD
+    Start([Power On / Reset]) --> Init[Initialize peripherals\nSPI, ADC, Timers, PWM, LCD]
+    Init --> Scheduler[Start synchronous scheduler]
+
+    Scheduler --> T1[Task: Read Input]
+    Scheduler --> T2[Task: Update Game State]
+    Scheduler --> T3[Task: Collision & Rules]
+    Scheduler --> T4[Task: Render Frame]
+    Scheduler --> T5[Task: Update Score/Lives]
+    Scheduler --> T6[Task: Audio Control]
+
+    T1 --> T2
+    T2 --> T3
+    T3 --> T4
+    T4 --> T5
+    T5 --> T6
+    T6 --> Scheduler
+```
+
+### Game State Flow
+
+```mermaid
+stateDiagram-v2
+    [*] --> Boot
+    Boot --> Menu
+    Menu --> Playing: Start input
+    Playing --> Playing: Move / Shoot / Spawn / Collide
+    Playing --> Win: All enemies cleared
+    Playing --> Lose: Lives == 0
+    Win --> Menu: Restart
+    Lose --> Menu: Restart
+```
+
+---
+
+## Project Structure
+
+```text
+.
+├── src/
+│   └── arein015_main.cpp      # Main game loop, scheduler, gameplay logic
+├── include/
+│   ├── st7735.h               # LCD driver interface
+│   ├── spiAVR.h               # SPI utilities
+│   ├── timerISR.h             # Timer/scheduler timing support
+│   ├── analogHelper.h         # ADC / joystick helpers
+│   ├── LCD.h                  # LCD helper utilities
+│   └── serialATmega.h         # Serial debug support
+├── platformio.ini             # Build configuration
+└── README.md
+```
+
+---
+
+## Build and Upload
+
+### Option 1: PlatformIO (recommended)
+
+1. Install [PlatformIO](https://platformio.org/).
+2. Connect your ATmega1284 programming setup.
+3. Build:
+   ```bash
+   pio run
+   ```
+4. Upload:
+   ```bash
+   pio run -t upload
+   ```
+
+### Option 2: AVR toolchain
+
+- Compile with your AVR-GCC setup and flash using your preferred uploader.
+
+---
+
+## How to Play
+
+1. Power on the system.
+2. Use the joystick to move the player ship.
+3. Trigger shoot input to fire projectiles.
+4. Eliminate enemies while avoiding hits.
+5. Watch score/lives on the LED display.
+6. Listen for event-based buzzer feedback (shoot, win, lose).
+
+---
+
+## Why This Project Is Useful
+
+- Demonstrates **real-time embedded scheduling**.
+- Shows practical **SPI graphics** on constrained MCUs.
+- Integrates mixed I/O: **ADC, GPIO, PWM, timers, and display control**.
+- Good reference for **embedded game architecture** and classroom demos.
+
+---
 
 ## License
 
-This project is for educational purposes and demonstration of embedded systems concepts.
+This project is intended for educational and demonstration use.
