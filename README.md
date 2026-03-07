@@ -33,8 +33,8 @@ flowchart LR
 ### Main Peripherals
 
 - **Display:** ST7735-based 1.44" SPI LCD for rendering gameplay.
-- **Input:** Joystick for left/right movement and firing.
-- **HUD Output:** LED display for score and lives.
+- **Input:** Joystick for left/right movement and up for firing. Button for hard restart.
+- **Output:** LED display for score and lives.
 - **Audio:** Passive buzzer driven with PWM patterns.
 
 ### Wiring Schematic
