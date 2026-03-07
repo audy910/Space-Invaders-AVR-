@@ -54,18 +54,40 @@ The LCD is wired for a standard 4-bit data interface.
 | D5 | D5 | Data Bit 5 | Digital Signal  |
 | D6 | D6 | Data Bit 6 | Digital Signal  |
 | D7 | D7 | Data Bit 7 | Digital Signal  |
+| 5V | A | Display Power | Power Rail |
+| GND | K | Ground | Ground Rail |
 
 
 #### HiLetgo Module (SPI LCD display)
+
 This module utilizes the high-speed SPI pins for game rendering.
+
 | Arduino Pin | Module Pin Label | Function |
 | :--- | :--- | :--- |
-| 5V / LED | LED | Backlight Power  |
+| 5V | LED | LED | Backlight Power  |
 | D13 | SCK | Serial Clock  |
 | D11 | SDA | Serial Data (MOSI)  |
-| D9 | AO | Data/Command Select  |
-| D8 | RESET | Module Reset  |
-| D10 | CS | Chip Select  |
+| D8 | AO | Data/Command Select  |
+| D10 | RESET | Module Reset  |
+| D12 | CS | Chip Select  |
+| GND | GND | Ground Rail |
+| 5V | VCC | Logic Power |
+
+#### Joystick 
+| Arduino Pin | Module Pin Label | Function |
+| :--- | :--- | :--- |
+| GND | GND | Ground |
+| 5V | 5V | Power |
+| A1 | VRX | Serial Data (MOSI)  |
+| A2 | VRY | Data/Command Select  |
+| A0 | SW | Module Reset  |
+
+#### Other Components 
+| Arduino Pin | Component |
+| :--- | :--- | :--- |
+| A5 | Button |
+| D9 | Buzzer | 
+
 
 
 ## Software / Task Flow
