@@ -84,7 +84,7 @@ This module utilizes the high-speed SPI pins for game rendering.
 
 #### Other Components 
 | Arduino Pin | Component |
-| :--- | :--- | :--- |
+| :--- | :--- | 
 | A5 | Button |
 | D9 | Buzzer | 
 
